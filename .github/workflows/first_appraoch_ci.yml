@@ -1,0 +1,27 @@
+name: Challenges Build Test
+on:
+    pull_request:
+        branches:
+            - master
+    workflow_dispatch:
+jobs:
+    build:
+        name: 'Build Challenge Container'
+        defaults:
+            run:
+                shell: bash
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                repository: 'SlyPex/CTF_Challenges'
+                ref: 'master'
+
+            - name: Docker Compose Setup
+              uses: cloudposse/github-action-docker-compose-test-run@main
+              with:
+                file: docker-compose.yml
+                service: b4nner
+                command: docker compose up
+                registry: docker.io/library/
