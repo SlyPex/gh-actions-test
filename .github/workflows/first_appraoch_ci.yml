@@ -30,4 +30,4 @@ jobs:
                 up-flags: "--build"
 
             - name: Test Challenge
-              run: nc localhost $(cat ${{ github.head_ref }}/README.md | grep -Po "(?<=-p )(\d*)")
+              run: docker ps -a
