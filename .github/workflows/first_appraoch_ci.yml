@@ -14,11 +14,11 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-
-            - name: Docker Compose Setup
-              uses: cloudposse/github-action-docker-compose-test-run@main
               with:
-                file: /${{ github.event.pull_request.title }}/docker-compose.yml
-                service: b4nner
-                command: docker compose up
-                registry: docker.io/library/
+                ref: ${{ github.head_ref }}
+
+            - name: Print Incoming Branch
+              run: echo " branch is \:\ ${{ github.head_ref }}"
+
+            - name: List Files under Cloned Repository
+              run : ls -la
