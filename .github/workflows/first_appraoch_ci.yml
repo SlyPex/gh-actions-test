@@ -28,3 +28,6 @@ jobs:
               with:
                 compose-file: ${{ github.head_ref }}/docker-compose.yml
                 up-flags: "--build"
+
+            - name: Test Challenge
+              run: nc localhost $(cat ${{ github.head_ref }}/README.md | grep -Po "(?<=-p )(\d*)")
