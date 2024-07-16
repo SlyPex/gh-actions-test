@@ -22,3 +22,9 @@ jobs:
 
             - name: List Files under Cloned Repository
               run : ls -la
+
+            - name: Docker Compose Challenge Deployment
+              uses: hoverkraft-tech/compose-action@v2.0.1
+              with:
+                compose-file: ${{ github.head_ref }}/docker-compose.yml
+                up-flags: "--build"
