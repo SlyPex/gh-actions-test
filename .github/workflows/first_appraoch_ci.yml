@@ -1,33 +1,54 @@
 name: Challenges Build Test
+run-name: ${{ github.head_ref }} Challenge | ${{ github.event.pull_request.user.name }}
 on:
     pull_request:
         branches:
             - master
     workflow_dispatch:
 jobs:
-    build:
-        name: 'Build Challenge Container'
-        defaults:
-            run:
-                shell: bash
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-              with:
-                ref: ${{ github.head_ref }}
+  test:
+    name: 'Test Challenge Structure'
+    defaults:
+      run:
+        shell: bash
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
-            - name: Print Incoming Branch
-              run: echo " branch is \:\ ${{ github.head_ref }}"
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.7'
+      
+      - name: Test Challenge directory structure
+        run: .github/scripts/chall_structure_validator.py
+          
 
-            - name: List Files under Cloned Repository
-              run : ls -la
+  build:
+      name: 'Build Challenge Container'
+      defaults:
+        run:
+          shell: bash
+      runs-on: ubuntu-latest
+      needs: test
+      if: success()
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            ref: ${{ github.head_ref }}
 
-            - name: Docker Compose Challenge Deployment
-              uses: hoverkraft-tech/compose-action@v2.0.1
-              with:
-                compose-file: ${{ github.head_ref }}/docker-compose.yml
-                up-flags: "--build"
+        - name: List Files under Cloned Repository
+          run : ls -l
 
-            - name: Test Challenge
-              run: docker ps -a
+        - name: Docker Compose Challenge Deployment
+          uses: hoverkraft-tech/compose-action@v2.0.1
+          with:
+            compose-file: ${{ github.head_ref }}/docker-compose.yml
+            up-flags: "--build"
+
+        - name: Test Challenge
+          run: docker ps -a
