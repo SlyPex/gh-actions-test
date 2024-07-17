@@ -24,7 +24,7 @@ jobs:
           python-version: '3.11.7'
       
       - name: Test Challenge directory structure
-        run: .github/scripts/chall_structure_validator.py
+        run: .github/scripts/chall_structure_validator.py ${{github.head_ref}}
           
 
   build:
