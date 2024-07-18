@@ -17,9 +17,9 @@ else
 		exit 1
 	elif (ls -lA $1 | grep -qo docker-compose.yml)
 	then
-		echo "::set-output name=deploy_env::docker-compose"
+		echo "deploy_env=docker-compose" >> $GITHUB_OUTPUT
 	elif (ls -lA $1 | grep -qo Dockerfile)
 	then
-		echo "::set-output name=deploy_env::Dockerfile"
+		echo "deploy_env=Dockerfile" >> $GITHUB_OUTPUT
 	fi
 fi
