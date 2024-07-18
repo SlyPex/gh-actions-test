@@ -66,6 +66,12 @@ jobs:
       - name: Build Challenge Image
         run: docker buildx ./${{github.head_ref}}/ -t ${{github.head_ref}}:latest
 
+      - name: Launch Container
+        run: docker run -d ${{github.head_ref}}:latest
+
+      - name: Check Running Container
+        run: docker ps -a
+
       
   build_docker-compose:
       name: 'Build Challenge Container using Docker Compose'
