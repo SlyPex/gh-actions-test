@@ -18,8 +18,10 @@ else
 	elif (ls -lA $1 | grep -qo docker-compose.yml)
 	then
 		echo "deploy_env=docker-compose" >> $GITHUB_OUTPUT
+		exit 0
 	elif (ls -lA $1 | grep -qo Dockerfile)
 	then
 		echo "deploy_env=Dockerfile" >> $GITHUB_OUTPUT
+		exit 0
 	fi
 fi
