@@ -64,7 +64,7 @@ jobs:
           ref: ${{ github.head_ref }}
       
       - name: Build Challenge Image
-        run: docker buildx ./${{github.head_ref}}/ -t ${{github.head_ref}}:latest
+        run: docker buildx build ./${{github.head_ref}}/ -t ${{github.head_ref}}:latest
 
       - name: Launch Container
         run: docker run -d ${{github.head_ref}}:latest
