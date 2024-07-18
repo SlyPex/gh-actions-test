@@ -67,7 +67,7 @@ jobs:
         run: docker buildx build ./${{github.head_ref}}/ -t ${{github.head_ref}}:latest
 
       - name: Launch Container
-        run: docker run -d ${{github.head_ref}}:latest
+        run: docker run -d "$(echo ${{github.head_ref}} | tr -t '[A-Z]' '[a-z]')":latest
 
       - name: Check Running Container
         run: docker ps -a
@@ -80,7 +80,7 @@ jobs:
           shell: bash
       runs-on: ubuntu-latest
       needs: test_deployability
-      if: ${{needs.test_deployability.outputs.deploy_env}} == 'docker-compose'
+      if: ${{ needs.test_deployability.outputs.deploy_env }} == 'docker-compose'
       steps:
         - name: Checkout
           uses: actions/checkout@v4
