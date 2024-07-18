@@ -46,6 +46,9 @@ jobs:
         id: 'deployable'
         run : .github/scripts/deployability_checker.sh ${{ github.head_ref }}
 
+      - name: 'Check Output'
+        run: echo "${{steps.deployable.outputs.deploy_env}}"
+
   build_dockerfile:
     name: 'Build Challenge Container using Dockerfile'
     defaults:
