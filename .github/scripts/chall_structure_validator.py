@@ -20,7 +20,7 @@ if __name__=='__main__':
     try:
         result = check_structure(path_to_chall_directory=argv[1])
     except IndexError as e:
-        print(f"[!] - Must specify an argument\nUsage : {argv[0]} [path_to_chall_directory]")
+        print(f"[!] - ERROR : Missing Argument\nUsage : {argv[0]} [path_to_chall_directory]")
     finally:
         if result:
             exit(0)
