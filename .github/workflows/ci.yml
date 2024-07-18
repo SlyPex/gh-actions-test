@@ -27,7 +27,7 @@ jobs:
         run: .github/scripts/chall_structure_validator.py ${{github.head_ref}}
 
   test_deployability:
-    name: 'Check Dockerfile Existance'
+    name: 'Check Deployability'
     defaults:
       run:
         shell: bash

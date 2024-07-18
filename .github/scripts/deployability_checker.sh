@@ -19,6 +19,7 @@ else
 	then
 		echo "::set-output name=deploy_env::docker-compose"
 	elif (ls -lA $1 | grep -qo Dockerfile)
+	then
 		echo "::set-output name=deploy_env::Dockerfile"
 	fi
 fi
