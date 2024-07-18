@@ -11,7 +11,8 @@ then
 	echo -e "[!] - ERROR : Missing Argument\nUsage : $0 [path_to_directory]"
 	exit 1
 else
-	if [[ ! -d "$1" ]] then
+	if [[ ! -d "$1" ]] 
+	then
 		echo "[!] - ERROR : The specified Argument $1 is not a directory"
 		exit 1
 	else
