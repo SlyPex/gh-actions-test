@@ -82,7 +82,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: false
-          tags: ${{github.repository_owner}}/${{github.head_ref}}:latest
+          tags: ${{github.head_ref}}:latest
 
       
   build_docker-compose:
