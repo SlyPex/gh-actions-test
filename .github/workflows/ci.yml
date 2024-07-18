@@ -26,11 +26,13 @@ jobs:
       - name: Test Challenge directory structure
         run: .github/scripts/chall_structure_validator.py ${{github.head_ref}}
 
-  test_dockerfile:
+  test_deployability:
     name: 'Check Dockerfile Existance'
     defaults:
       run:
         shell: bash
+    outputs:
+      deploy_env: ${{ steps.deployable.outputs.deploy_env }}
     runs-on: ubuntu-latest
     needs: test
     if: success()
@@ -41,25 +43,8 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: 'Dockerfile Existance'
-        run : .github/scripts/dockerfile_checker.sh ${{ github.head_ref }}
-
-  
-  test_docker_compose:
-    name: 'Check Docker Compose Existance'
-    defaults:
-      run:
-        shell: bash
-    runs-on: ubuntu-latest
-    needs: test
-    if: success()
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-
-      - name: 'Docker Compose Existance'
-        run : .github/scripts/docker_compose_checker.sh ${{ github.head_ref }}
+        id: 'deployable'
+        run : .github/scripts/deployability_checker.sh ${{ github.head_ref }}
 
   build_dockerfile:
     name: 'Build Challenge Container using Dockerfile'
@@ -67,8 +52,8 @@ jobs:
       run:
         shell: bash
     runs-on: ubuntu-latest
-    needs: test_dockerfile
-    if: success()
+    needs: test_deployability
+    if: ${{needs.test_deployability.outputs.deploy_env}} == 'Dockerfile'
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -78,11 +63,8 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
       
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          push: false
-          tags: ${{github.head_ref}}:latest
+      - name: Build Challenge Image
+        run: docker buildx ./${{github.head_ref}}/ -t ${{github.head_ref}}:latest
 
       
   build_docker-compose:
@@ -91,8 +73,8 @@ jobs:
         run:
           shell: bash
       runs-on: ubuntu-latest
-      needs: test_docker_compose
-      if: success()
+      needs: test_deployability
+      if: ${{needs.test_deployability.outputs.deploy_env}} == 'docker-compose'
       steps:
         - name: Checkout
           uses: actions/checkout@v4

@@ -15,7 +15,10 @@ else
 	then
 		echo "[!] - ERROR : The specified Argument $1 is not a directory"
 		exit 1
-	else
-		ls -lA $1 | grep -qo Dockerfile
+	elif (ls -lA $1 | grep -qo docker-compose.yml)
+	then
+		echo "::set-output name=deploy_env::docker-compose"
+	elif (ls -lA $1 | grep -qo Dockerfile)
+		echo "::set-output name=deploy_env::Dockerfile"
 	fi
 fi
