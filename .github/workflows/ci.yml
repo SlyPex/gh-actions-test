@@ -55,9 +55,9 @@ jobs:
 ######################        
 
   build_dockerfile:
-    name: 'Build Challenge Container using Dockerfile'
+    name: 'Build Challenge Image using Dockerfile'
     needs: test_deployability
-    if: ${{needs.test_deployability.outputs.deploy_env}} == 'Dockerfile'
+    if: needs.test_deployability.outputs.deploy_env == 'Dockerfile'
     defaults:
       run:
         shell: bash
@@ -83,9 +83,9 @@ jobs:
 ######################      
 
   build_docker-compose:
-      name: 'Build Challenge Container using Docker Compose'
+      name: 'Start Challenge using Docker Compose'
       needs: test_deployability
-      if: ${{ needs.test_deployability.outputs.deploy_env }} == 'docker-compose'
+      if: needs.test_deployability.outputs.deploy_env == 'docker-compose'
       defaults:
         run:
           shell: bash
