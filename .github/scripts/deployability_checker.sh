@@ -25,6 +25,7 @@ else
 		exit 0
 	fi
 	else
+	then
 		echo "[*] This Challenge is not deployable"
 		exit 1
 	fi
